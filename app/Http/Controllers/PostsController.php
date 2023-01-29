@@ -47,6 +47,7 @@ class PostsController extends Controller
             'is_published' => $request->is_published === 'on',
             'min_to_read' => $request->min_to_read
         ]);
+        
         return redirect(route('blog.index'));
 
       
