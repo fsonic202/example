@@ -1,10 +1,10 @@
-<<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
       @vite('resources/js/app.js')
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>blog</title>
+    <title>Create News</title>
    
 </head>
 <body>
@@ -18,10 +18,10 @@
 
 <div class="m-auto pt-20">
     <form
-        action=""
-        method=""
+        action="{{ route('blog.store') }}"
+        method="POST"
         enctype="multipart/form-data">
-
+        @csrf
         <label for="is_published" class="text-gray-500 text-2xl">
             Is Published
         </label>
