@@ -39,18 +39,22 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'excerpt' => 'required',
+            'body' => 'required',
+            'image' => ['required', 'mimes:jpg,png,jpeg,webp,gif', 'max:5048'],
+            'min_to_read' => 'min:0|max:60'
+        ]);
         Post::create([
             'title' => $request->title,
             'excerpt' => $request->excerpt,
             'body' => $request->body,
-            'image_path' => 'temporary',
+            'image_path' => $this->storeimage($request),
             'is_published' => $request->is_published === 'on',
             'min_to_read' => $request->min_to_read
         ]);
-        
         return redirect(route('blog.index'));
-
-      
     }
 
     /**
@@ -74,7 +78,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('blog.edit', [
+            'post' => Post::where('id', $id)->first()
+        ]);
     }
 
     /**
@@ -86,7 +92,20 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255|unique:posts,title,'. $id,
+            'excerpt' => 'required',
+            'body' => 'required',
+            'image' => ['mimes:jpg,png,jpeg,webp,gif', 'max:5048'],
+            'min_to_read' => 'min:0|max:60'
+        ]);
+
+        Post::where('id', $id)->update($request->except([
+            '_token', '_method'
+        
+        ]));
+        
+        return redirect(route('blog.index'));
     }
 
     /**
@@ -98,5 +117,12 @@ class PostsController extends Controller
     public function destroy($id)
     {
         //
+    }
+    private function storeimage($request)
+    {
+        $newImageName = uniqid() . '-' . $request->title . '.' .
+        $request->image->extension();
+
+        return $request->image->move(public_path('images'), $newImageName);
     }
 }

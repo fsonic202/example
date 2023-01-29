@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fileable = [
+    protected $fillable = [
         'title','excerpt','body','image_path','is_published','min_to_read'
     ];
 }
