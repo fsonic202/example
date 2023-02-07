@@ -1,6 +1,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
-      @vite('resources/js/app.js')
+    
+      @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="UTF-8">
     <meta
         name="viewport"
@@ -63,7 +65,7 @@
                         </a>
                     on 13-07-2022
                 </span>
-                <a href="{{ route('blog.edit', $post->id) }}" class="block italic text-green-500 border-b-1 border-green-400">
+                <a href="{{ route('blog.edit', $post->id) }}" class="block italic text-green-500 border-b-1 border-green-400  btn-info">
                     Edit
                 </a>
                 <form action="{{ route('blog.destroy', $post->id) }}" method="POST">
@@ -77,5 +79,8 @@
         </div>
     </div>
     @endforeach
+    <div class="mx-auto pb-10 w-4/5">
+        {{ $posts->links() }}
+    </div>
 </body>
 </html>
